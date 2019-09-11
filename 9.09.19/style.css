@@ -1,0 +1,49 @@
+@import url(http://fonts.googleapis.com/css?family=Nunito+Sans);
+
+.two-columns {
+    column-count: 2
+}
+
+img {
+    float: right;
+    padding: 15px;
+}
+
+.container {
+    display: flex;
+}
+
+.column-1 {
+    margin-right: 20px;
+}
+
+.container-manual * {
+    background-color: cadetblue;
+}
+
+.manual-one {
+    width: 49%;
+}
+
+.manual-two {
+    position: relative;
+    width: 49%;
+    bottom: 926px;
+    left: 580px;
+}
+
+h1{
+    font-family: monospace;
+}
+
+h2{
+    font-family: serif;
+}
+
+h3{
+    font-family: sans-serif;
+}
+
+h4{
+    font-family: "Nunito Sans";
+}
