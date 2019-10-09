@@ -2,7 +2,7 @@ export const SocketEvent = {
     AddUser: 'add user',
     NewMessage: 'new message',
     Login: 'login',
-    UserJoin: 'user joined',
+    UserJoined: 'user joined',
     UserLeft: 'user left',
     Disconnect: 'disconnect',
     Reconnect: 'reconnect',

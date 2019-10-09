@@ -23,8 +23,12 @@ export class AppComponent {
   constructor(){
     this.io = socket('https://cs4350sockets.herokuapp.com');
 
+    while (!this.username){
+      this.username = prompt('Enter a username: ')
+    }
+
     this.setupListeners();
-    //this.io.emit(SocketEvent.AddUser, this.username);
+    this.io.emit(SocketEvent.AddUser, this.username);
   }
 
   public addParticipantsMessage(data: ISocketMessage){
@@ -62,7 +66,7 @@ export class AppComponent {
     if(shouldPrepend){
       this.allMessages.unshift(msg);
     }else{
-      this.allMessages.push();
+      this.allMessages.push(msg);
     }
 
     this.scrollToMessageTop();
@@ -88,7 +92,7 @@ export class AppComponent {
     const array = [];
 
     for(let n = 0, i = username.length; n < i; n++){
-      const hex = Number(username.charAt(n)).toString(16);
+      const hex = Number(username.charCodeAt(n)).toString(16);
       array.push(hex);
     }
 
@@ -104,7 +108,36 @@ export class AppComponent {
       this.isConnected = true;
       this.log(SocketMessage.Welcome, true);
       this.addParticipantsMessage(data);
-    })
+    });
+
+    this.io.on(SocketEvent.NewMessage, (data) => {
+      this.addChatMessage(data);
+    });
+
+    this.io.on(SocketEvent.UserJoined, (data) => {
+      this.log(data.username + ' joined.');
+    });
+
+    this.io.on(SocketEvent.UserLeft, (data) => {
+      this.log(data.username);
+    });
+
+    this.io.on(SocketEvent.Disconnect, (data) => {
+      this.log(SocketMessage.Disconnected);
+    });
+    
+    this.io.on(SocketEvent.Reconnect, () => {
+      this.log(SocketMessage.Reconnected);
+      if(this.username){
+        this.io.emit(SocketEvent.AddUser, this.username);
+      }
+    });
+
+    this.io.on(SocketEvent.ReconnectError, (data) => {
+      this.log(SocketMessage.UnableToReconnect);
+    });
   }
+
+  
 }
 
